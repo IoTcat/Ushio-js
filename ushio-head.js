@@ -8,9 +8,10 @@ var page = {
 	url: window.location.href,
 	title: 'Lovely Ushio',
 	icon: 'https://cdn.yimian.xyz/img/head/head3r.ico',
-	path: window.location.path,
+	path: window.location.pathname,
 	host: window.location.host,
 	hostname: window.location.hostname,
+	session: {},
 	openTime: Date.parse(new Date()) / 1000,
 	Timer: 0,
 	TimerObj: null,
@@ -25,6 +26,9 @@ var page = {
 	}(),
 
 };
+
+/* session ini */
+var session = {};
 
 /* page config merge */
 if($('title').length){
