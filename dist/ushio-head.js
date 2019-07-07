@@ -4,7 +4,8 @@
 var cookie={set:function(e,r,a){if(a==undefined)var a=3e3;var t=new Date;t.setTime(t.getTime()+a*24*60*60*1e3);document.cookie=e+"="+escape(r)+";expires="+t.toGMTString()+";path=/"},get:function(e){var r,a=new RegExp("(^| )"+e+"=([^;]*)(;|$)");if(r=document.cookie.match(a)){return unescape(r[2])}else{return null}},del:function(e){var r=new Date;r.setTime(r.getTime()-1);var a,t=new RegExp("(^| )"+e+"=([^;]*)(;|$)");if(a=document.cookie.match(t)){var n=unescape(a[2])}else{var n=null}if(n!=null){document.cookie=e+"="+n+";expires="+r.toGMTString()}}}
 
 /* include css */
-document.write('<link rel="stylesheet" href="https://cdn.yimian.xyz/ushio-js/ushio-js.min.css">');
+if(window.screen.width < 600) document.write('<link rel="stylesheet" href="https://cdn.yimian.xyz/ushio-js/ushio-js.mobile.min.css">');
+else document.write('<link rel="stylesheet" href="https://cdn.yimian.xyz/ushio-js/ushio-js.min.css">');
 
 /* global default page config */
 var page = {
