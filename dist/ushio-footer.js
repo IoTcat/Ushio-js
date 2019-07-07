@@ -176,7 +176,7 @@ function session_websocket_ini(){
 	page.ws.onmessage = function(msg){
 		page.session = JSON.parse(msg.data);
 		session.method = 'WebSocket';
-	  	if(session.status === undefined){
+	  	if(session.status === undefined && typeof block_aplayer == "undefined"){
 	  		player_ini();
 	  	}
 	  	session.status = true;
@@ -243,7 +243,7 @@ function session_ajax_ini(){
 	  		session.get('LastOperateTime');
 	  	}
 
-	  	if(session.status === undefined){
+	  	if(session.status === undefined && typeof block_aplayer == "undefined"){
 	  		player_ini();
 	  	}
 
