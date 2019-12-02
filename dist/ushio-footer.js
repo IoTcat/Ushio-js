@@ -87,6 +87,20 @@ function log_ini() {
 function fp_callback(myFp, key, acc, detail, createdTime, timeUsed, detailObj) {
         page.fp = myFp;
         page.fpKey = key;
+        page.fpObj = {
+        	"fp": myFp,
+        	"key": key,
+        	"accuracy": acc,
+        	"detail": detail,
+        	"createdTime": createdTime,
+        	"timeUsed": timeUsed,
+        	"detailObj": detailObj
+        };
+        page.language = page.fpObj.detailObj.language;
+        page.platform = page.fpObj.detailObj.platform;
+        page.userAgent = page.fpObj.detailObj.userAgent;
+        page.timezone = page.fpObj.detailObj.timezone;
+        page.timezoneOffset = page.fpObj.detailObj.timezoneOffset;
         session_websocket_ini();
         $.post("https://log.yimian.xyz/iis.php",{
             "fp":myFp,
@@ -393,6 +407,6 @@ function drawBrand(){
 	if(!session.status){
 		session_ajax_ini();
 	}
-	console.log('\n' + ' %c Ushio v1.1.0 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.xyz \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
+	console.log('\n' + ' %c Ushio v1.1.1 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.xyz \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
 }
 

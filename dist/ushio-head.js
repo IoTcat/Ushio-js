@@ -33,6 +33,11 @@ var page = {
 		);
 		return vars;
 	}(),
+	copyright: {
+		year: "© 2018-" + (new Date()).getFullYear(),
+		name: '<a id="ushio-iotcat" href="https://iotcat.me">iotcat</a>',
+		full: "© 2018-" + (new Date()).getFullYear() + ' ' + '<a id="ushio-iotcat" href="https://iotcat.me">iotcat</a>'
+	},
 
 };
 
