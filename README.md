@@ -38,4 +38,6 @@
 + `tips.error(params)`: 错误信息
 + `tips.question(params)`: 问题
 
+## jQuery
++ `$.md5()`: 支持md5扩展
 
