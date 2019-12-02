@@ -11,6 +11,13 @@
 + `page.openTime`:打开页面的时间戳
 + `page.title`: 页面标题
 + `page.host`: 目标主机名
++ `page.sid`: 会话id
++ `page.timezone`: 时区
++ `page.timezoneOffset`: 时区校准参数
++ `page.platform`: 操作平台
++ `page.userAgent`: 用户代理
++ `page.language`: 客户端语言
++ `page.copyright.full`: 版权 
 
 ## Block参数
 + `block_aplayer`: 不加载aplayer
