@@ -297,7 +297,10 @@ function player_ini(){
 	            window.aplayers[0].lrc.hide();
 	            if(session.get('aplayer/status') == 'play') {
 	            	window.aplayers[0].play();
-	            	if(window.aplayers[0].audio.paused) window.aplayers[0].notice('Click Here', 2000, 0.8);
+	            	if(window.aplayers[0].audio.paused) {
+	            		window.aplayers[0].notice('Click Here', 5000, 0.8);
+	            		tips.info({message: "戳左下角继续音乐哦(^_−)☆"});
+	            	};
 	            }
 	            
 	            window.aplayers[0].on('play', function () {
@@ -410,6 +413,6 @@ function drawBrand(){
 	if(!session.status){
 		session_ajax_ini();
 	}
-	console.log('\n' + ' %c Ushio v1.1.2 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.xyz \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
+	console.log('\n' + ' %c Ushio v1.1.3 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.xyz \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
 }
 
