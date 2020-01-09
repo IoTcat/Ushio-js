@@ -15,6 +15,7 @@
 if(typeof block_md5 == "undefined") document.write('<script src="https://cdn.yimian.xyz/ushio-js/jquery.md5.min.js"></script>');
 
 /* page reload */
+$('head').append('<meta charset="UTF-8">');
 $('title').remove();
 $('head').append('<title>' + page.title + '</title>');
 $('[rel="icon"]').remove();
@@ -28,7 +29,6 @@ if(!$('[name="keywords"]').length) {
 if(!$('[name="description"]').length) {
     $('head').append('<meta name="description" content="小汐の页">');
 }
-
 
 
 /* out&in event amine */
