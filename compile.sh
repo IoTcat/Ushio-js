@@ -1,5 +1,5 @@
-npm i uglifyjs
-npm i uglifycss
+npm i -g uglify-js
+npm i -g uglifycss
 cp *.css dist/
 cp *.js dist/
 uglifyjs dist/ushio-footer.js -o dist/ushio-footer.min.js --source-map url='dist/ushio-footer.min.js.map'

@@ -23,6 +23,7 @@
 + `block_aplayer`: 不加载aplayer
 + `block_viewport`: 不自动适配移动端
 + `block_tips`: 不加载Global Tips
++ `aplayer_playlist`: 播放歌单
 
 ## Session方法
 + `session.set(index, val)`: 设置session

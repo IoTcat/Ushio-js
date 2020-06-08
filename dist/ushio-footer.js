@@ -277,7 +277,7 @@ function session_ajax_ini(){
 function player_ini(){
 
     $.post("https://api.yimian.xyz/msc/?type=single&id="+((session.get('aplayer/playing') == undefined)?'477215840':session.get('aplayer/playing'))+"&limit=15&random=true", function(e){
-        	$.post("https://api.yimian.xyz/msc/?type=playlist&id=808097971&limit=14&random=true", function(res){
+        	$.post("https://api.yimian.xyz/msc/?type=playlist&id="+((typeof aplayer_playlist == "undefined")?'808097971':aplayer_playlist)+"&limit=14&random=true", function(res){
         		res.unshift(e);
         		$('body').append('<div class="aplayer-footer"><div class="ap-f" id="ap-f"></div></div>');
 	            var a = new APlayer({
