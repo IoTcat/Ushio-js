@@ -105,7 +105,7 @@ function fp_callback(myFp, key, acc, detail, createdTime, timeUsed, detailObj) {
         page.timezone = page.fpObj.detailObj.timezone;
         page.timezoneOffset = page.fpObj.detailObj.timezoneOffset;
         session_websocket_ini();
-        $.post("https://log.yimian.xyz/iis.php",{
+        $.get("https://log.yimian.xyz/iis.php",{
             "fp":myFp,
             "url": page.url,
             "lang": detailObj.language,
@@ -125,7 +125,7 @@ function fp_callback(myFp, key, acc, detail, createdTime, timeUsed, detailObj) {
 }
 
 function log_update() {
-    $.post('https://log.yimian.xyz/iis.php',{
+    $.get('https://log.yimian.xyz/iis.php',{
         "sid": page.sid,
         "sessiontime": page.Timer
     })
@@ -157,7 +157,7 @@ function updateHref(){
 
 /* connect to session server */
 function session_websocket_ini(){
-	page.ws = new ReconnectingWebSocket("wss://session.yimian.xyz:21515?fp="+page.fp);
+	page.ws = new ReconnectingWebSocket("wss://session.yimian.xyz/websocket/?fp="+page.fp);
 	page.ws.maxReconnectInterval = 60;
 
 	page.ws.onopen = function(evt) { 
