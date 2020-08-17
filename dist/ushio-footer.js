@@ -118,6 +118,7 @@ function who(){
 			session_ini_pre();
 		}else{
 			window.location.href='https://auth.yimian.xyz/?from='+window.btoa(page.url);
+			throw new Error('ushio::Redirect to Ushio-auth!');
 		}
 	});
 }
@@ -150,7 +151,7 @@ function log_update() {
         "sessiontime": page.Timer
     })
 }
-setTimeout("log_ini();", 300);
+setTimeout("log_ini();",20);
 
 
 
@@ -326,16 +327,25 @@ session.onload(function(){
 
 session.onload(function(){
 	var isStop = false;
-
+	if(page.auth.indexOf('any') != -1){
+		if(session.get('group') == 'anonymous'){
+			isStop = true;
+			alert('此页面需要您的联系方式，将跳转至登录页面...');
+			window.location.href='https://login.yimian.xyz/?from='+page.url;
+			throw new Error('ushio::Redirect to Ushio-Login!');
+		}
+	}else{
 		page.auth.forEach(function(item){
 			if(!isStop){
 				if(!session.get(item)){
 					isStop = true;
 					alert('此页面需要您的'+item+'，将跳转至登录页面...');
 					window.location.href='https://login.yimian.xyz/?require='+item+'&from='+page.url;
+					throw new Error('ushio::Redirect to Ushio-Login!');
 				}
 			}
 		});
+	}	
 
 });
 
@@ -479,7 +489,7 @@ function drawBrand(){
 	if(!session.status){
 		session_ajax_ini();
 	}
-	console.log('\n' + ' %c Ushio v3.2.2 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
+	console.log('\n' + ' %c Ushio v3.2.5 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
 }
 
 /* session health */
@@ -498,5 +508,6 @@ setInterval(()=>{
 	if(new Date().valueOf() - SessionLastCntTime > 30000){
 		alert('Session Error!!! Page will reload!');
 		window.location.reload();
+		throw new Error('ushio::Page Reload!');
 	}
 }, 7000);
