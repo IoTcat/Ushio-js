@@ -3,6 +3,13 @@
 /* cookie-js2@iotcat v1.0.1 */
 var cookie={set:function(e,r,a){if(a==undefined)var a=3e3;var t=new Date;t.setTime(t.getTime()+a*24*60*60*1e3);document.cookie=e+"="+escape(r)+";expires="+t.toGMTString()+";path=/"},get:function(e){var r,a=new RegExp("(^| )"+e+"=([^;]*)(;|$)");if(r=document.cookie.match(a)){return unescape(r[2])}else{return null}},del:function(e){var r=new Date;r.setTime(r.getTime()-1);var a,t=new RegExp("(^| )"+e+"=([^;]*)(;|$)");if(a=document.cookie.match(t)){var n=unescape(a[2])}else{var n=null}if(n!=null){document.cookie=e+"="+n+";expires="+r.toGMTString()}}}
 
+/* rand string */
+function randomStr(length) {
+    var result = '', chars = '0123456789abcdefghijklmnopqrstuvwxyz';
+    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+}
+
 /* include css */
 if(typeof block_aplayer == "undefined"){
 	if(window.screen.width < 600) document.write('<link rel="stylesheet" href="https://cdn.yimian.xyz/ushio-js/ushio-js.mobile.min.css">');
@@ -21,6 +28,10 @@ var page = {
 	host: window.location.host,
 	hostname: window.location.hostname,
 	session: {},
+	auth: [],
+	ushio: true,
+	window: true,
+	LastWindowOpenTime: new Date().valueOf(),
 	openTime: Date.parse(new Date()) / 1000,
 	Timer: 0,
 	TimerObj: null,
@@ -41,8 +52,44 @@ var page = {
 
 };
 
+/* check cookie */
+var _t_ran_cookie = randomStr(16);
+cookie.set('_t_ran_cookie', _t_ran_cookie);
+if(cookie.get('_t_ran_cookie') != _t_ran_cookie && typeof allow_no_cookie == "undefined"){
+	alert('Your browser does not support cookie, Ushio service will quit..');
+	page.ushio = false;
+	throw new Error('ushio::Not support cookie!');
+}
+
+
+/* get mask */
+if(cookie.get('_mask') && cookie.get('_mask').length == 64){
+	page.mask = cookie.get('_mask');
+}else{
+	page.mask = randomStr(64);
+	cookie.set('_mask', page.mask);
+}
+
+/* set flag */
+page.flag = randomStr(64);
+
+/* ushio auth */
+
+
 /* session ini */
 var session = {};
+session.onload = function(f, isFirst){
+	if(session.status){
+		if(isFirst == true){
+			session_wait(f);
+		}else{
+			f();
+		}
+	}else{
+		setTimeout(session.onload, 30, f, true);
+	}
+}
+
 
 /* page config merge */
 if($('title').length){
