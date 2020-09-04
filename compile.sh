@@ -1,10 +1,11 @@
-npm i -g uglify-js
-npm i -g uglifycss
+#npm i -g uglify-js
+#npm i -g uglifycss
 cp *.css dist/
 cp *.js dist/
-terser dist/ushio-footer.js -m -o dist/ushio-footer.min.js --source-map url='dist/ushio-footer.min.js.map'
-uglifyjs dist/ushio-head.js -m -o dist/ushio-head.min.js --source-map url='dist/ushio-head.min.js.map'
-uglifyjs dist/jquery.md5.js -m -o dist/jquery.md5.min.js --source-map url='dist/jquery.md5.min.js.map'
-uglifycss dist/ushio-js.css > dist/ushio-js.min.css
-uglifycss dist/ushio-js.mobile.css > dist/ushio-js.mobile.min.css
-uglifycss dist/ushio-js.tips.css > dist/ushio-js.tips.min.css
+cd dist/
+terser ./ushio-footer.js -m -o ./ushio-footer.min.js --source-map url='/ushio-footer.min.js.map'
+uglifyjs ./ushio-head.js -m -o ./ushio-head.min.js --source-map url='/ushio-head.min.js.map'
+uglifyjs ./jquery.md5.js -m -o ./jquery.md5.min.js --source-map url='/jquery.md5.min.js.map'
+uglifycss ./ushio-js.css > ./ushio-js.min.css
+uglifycss ./ushio-js.mobile.css > ./ushio-js.mobile.min.css
+uglifycss ./ushio-js.tips.css > ./ushio-js.tips.min.css

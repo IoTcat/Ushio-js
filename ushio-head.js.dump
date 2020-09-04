@@ -3,6 +3,18 @@
 /* cookie-js2@iotcat v1.0.1 */
 var cookie={set:function(e,r,a){if(a==undefined)var a=3e3;var t=new Date;t.setTime(t.getTime()+a*24*60*60*1e3);document.cookie=e+"="+escape(r)+";expires="+t.toGMTString()+";path=/"},get:function(e){var r,a=new RegExp("(^| )"+e+"=([^;]*)(;|$)");if(r=document.cookie.match(a)){return unescape(r[2])}else{return null}},del:function(e){var r=new Date;r.setTime(r.getTime()-1);var a,t=new RegExp("(^| )"+e+"=([^;]*)(;|$)");if(a=document.cookie.match(t)){var n=unescape(a[2])}else{var n=null}if(n!=null){document.cookie=e+"="+n+";expires="+r.toGMTString()}}}
 
+/*!
+ * translater.js v1.0.12
+ * Simple translation tools.
+ * 
+ * Copyright (c) 2018 kenny wong <wowohoo@qq.com>
+ * http://jaywcjlove.github.io/translater.js/
+ * 
+ * Licensed under the MIT license.
+ */
+"use strict";var _typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};!function(e){if("object"===("undefined"==typeof exports?"undefined":_typeof(exports))&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var t;t="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this,t.Translater=e()}}(function(){function e(e){for(var t=e+"=",n=document.cookie.split(";"),a=0;a<n.length;a++){for(var r=n[a];" "==r.charAt(0);)r=r.substring(1,r.length);if(0==r.indexOf(t))return unescape(r.substring(t.length,r.length))}return!1}function t(e,t,n){var a=new Date;a.setTime(a.getTime()+3600*Number(n)*1e3),document.cookie=e+"="+t+"; path=/;expires = "+a.toGMTString()}function n(){for(var e=Array.prototype.concat(f(document),g(document,"IMG"),g(document,"INPUT")),t=[],n=new Object,a=0;a<e.length;a++){n=l(e[a]);var r=Object.getOwnPropertyNames(n);(r.length>=2&&"0"==r[0]||r.length>2)&&t.push(n)}return t}function a(e){var t={},n=e.nodeValue,a=0;if(t.element=e.parentElement,t["lang-default"]=n.replace(/<!--(.*)-->.*/,""),n&&(n=e.nodeValue.match(/<!--\{\w+\}[\s\S]*?-->/gi)),n&&n.length>0)for(;a<n.length;a++){var r=n[a].match(/\{([^\ ]*)\}/)[0];r=r.replace(/\{([^\ ]*)\}/g,"$1"),t["lang-"+r]=n[a].replace(/<!--\{\w+\}(.*)-->/g,"$1")}return e.parentElement.innerHTML=t["lang-default"],t}function r(e){var t=0,n=[],a=e.outerHTML,r=a.match(/src=\"(.*?)\"/),l=a.match(/alt=\"(.*?)\"/),o=a.match(/title=\"(.*?)\"/),u=a.match(/placeholder=\"(.*?)\"/),i=a.match(/value=\"(.*?)\"/),g=function(n,r,l){var o={},u=new RegExp(l+'.(\\w+).\\".*?\\"',"g"),i=new RegExp(l+"(.*?)="),g=new RegExp(l+'(.*?)=\\"(.*?)\\"');if(o.element=e,o.default=2===n.length?n[1]:"",(n=a.match(u))&&n.length>0)for(t=0;t<n.length;t++)o[n[t].match(i,"$1")[1]]=n[t].match(g,"$1")[2],o.type=r;return o};return r&&n.push(g(r,"src","data-lang-")),l&&n.push(g(l,"alt","alt-")),o&&n.push(g(o,"title","title-")),u&&n.push(g(u,"placeholder","placeholder-")),i&&n.push(g(i,"value","value-")),n}function l(e,t){if(t=t||{},e.parentElement&&"TITLE"===e.parentElement.tagName)return a(e);if("IMG"===e.tagName&&1===e.nodeType)return r(e);if("INPUT"===e.tagName&&1===e.nodeType)return r(e);var n="lang-default",o=e.nodeValue,i=/^\{\w+\}/;8===e.nodeType&&i.test(o)&&(n=o.match(i)[0],n="lang-"+(n?n.replace(/\{([^\ ]*)\}/g,"$1"):""),o=o.replace(i,""),""!==u(o)&&(t[n]=o)),""===u(o)||t["lang-default"]||(t[n]=o,t.element=e);var g=e.nextSibling;return g&&1!==g.nodeType&&l(g,t),t}function u(e){return""+(null==e?"":(e+"").replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,"").replace(/[\r\n]+/g,""))}function i(e,t){var n=t||location.search,a={};if(-1!=n.indexOf("?"))for(var r=n.substr(1).split("&"),l=0,o=r.length;l<o;l++){var u=r[l].split("=");a[u[0]]=u[1]&&decodeURIComponent(u[1])}return e?a[e]:a}function g(e,t){for(var n=0,a=[],r=e.getElementsByTagName(t);n<r.length;n++)a.push(r[n]);return a}var c=function(a,r){a=a||{},i("lang")&&(a.lang=i("lang")),a.lang?(t("t-lang",a.lang,24),this.lang_name=a.lang):this.lang_name="default",this.callback=r||function(){},this.langs=n()||[],"default"!==this.lang_name&&this.setLang(a.lang);var l=e("t-lang");l&&"default"!==l&&this.setLang(l)};c.prototype={setLang:function(e,n){var a=n||this.langs,r="";this.lang_name=e;for(var l=0;l<a.length;l++)a[l]["lang-"+e]||a[l][e]?(r="TITLE"===a[l].element.tagName?"innerHTML":"IMG"===a[l].element.tagName?a[l].type:"INPUT"===a[l].element.tagName?a[l].type:"nodeValue",a[l].element[r]=a[l]["lang-"+e]||a[l][e]):this.setLang(e,a[l]);t("t-lang",e,24)},getLang:function(){return this.lang_name}};var f=window.NodeFilter?function(e){var t,n,a=[];for(n=document.createTreeWalker(e,NodeFilter.SHOW_TEXT,null,null);t=n.nextNode();)"SCRIPT"!==t.parentElement.tagName&&"STYLE"!==t.parentElement.tagName&&"CODE"!==t.parentElement.tagName&&""!==u(t.nodeValue)&&a.push(t);return a}:function(e){switch(e.nodeType){case 3:return[e];case 1:case 9:var t,n=e.childNodes,a=[];if("SCRIPT"!==e.tagName&&"STYLE"!==e.tagName&&"CODE"!==e.tagName&&""!==u(o.nodeValue)){for(t=0;t<n.length;t++)f(n[t])&&a.push(f(n[t]));return Array.prototype.concat.apply([],a)}}};return c});
+
+
 /* rand string */
 function randomStr(length) {
     var result = '', chars = '0123456789abcdefghijklmnopqrstuvwxyz';
@@ -29,6 +41,10 @@ var page = {
 	hostname: window.location.hostname,
 	session: {},
 	auth: [],
+	lang: [],
+	nolang: [],
+	tran: {},
+	group: [],
 	ushio: true,
 	window: true,
 	LastWindowOpenTime: new Date().valueOf(),
@@ -73,7 +89,36 @@ if(cookie.get('_mask') && cookie.get('_mask').length == 64){
 /* set flag */
 page.flag = randomStr(64);
 
-/* ushio auth */
+/* Get Pre Language */
+if(cookie.get('_lang')){
+	page.lang = JSON.parse(atob(cookie.get('_lang')));
+}else{
+	page.lang.push((navigator.language||navigator.userLanguage).substr(0, 2));
+}
+
+
+/* translater */
+;(function(){
+	if(typeof lang != "undefined" && lang.length > 0){
+		var l = lang[0];
+		for(var i = 0; i < lang.length; i++){
+			if(page.lang.indexOf(lang[i]) != -1){
+				l = lang[i];
+				break;
+			}
+		}
+		page.tran.setLang = function(l){
+			new Translater({
+		  		lang: l
+			});
+			page.tran.getLang = function(){return l;}
+		}
+
+		$(function(){
+			page.tran.setLang(l);
+		});
+	}
+})();
 
 
 /* session ini */

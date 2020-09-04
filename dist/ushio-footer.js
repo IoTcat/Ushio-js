@@ -327,6 +327,12 @@ session.onload(function(){
 
 session.onload(function(){
 	var isStop = false;
+	if(typeof session.get('group') == "undefined"){
+		isStop = true;
+		alert('Ushio-session没有您的记录，将登出...');
+		window.location.href='https://auth.yimian.xyz/checkout.php?from='+ btoa(page.url);
+		throw new Error('ushio::Redirect to Ushio-Logout!');
+	}
 	if(page.auth.indexOf('any') != -1){
 		if(session.get('group') == 'anonymous'){
 			isStop = true;
@@ -348,6 +354,132 @@ session.onload(function(){
 	}	
 
 });
+
+
+session.onload(function(){
+	var group = session.get('group');
+	if(page.group.length){
+		var cnt = 0;
+		page.group.forEach(function(item, index){
+			if(group.indexOf(item) != -1){
+				cnt = index+1;
+			}
+		});
+		if(!cnt){
+			alert('本页面需要'+page.group[cnt]+'权限，您被拒绝访问。如有疑惑请联系站长i@iotcat.me!');
+			window.location.href='https://guide.yimian.xyz/';
+		}
+	}
+});
+
+
+session.onload(function(){
+
+	if(typeof lang != "undefined" && lang.length > 0){
+		var l = lang[0];
+		if(session.get('lang')){
+			page.lang = page.lang.concat(JSON.parse(atob(session.get('lang'))));
+			cookie.set('_lang', session.get('lang'));
+		}
+		if(session.get('nolang')){
+			page.nolang = JSON.parse(atob(session.get('nolang')));
+		}
+
+		for(var i = 0; i < lang.length; i++){
+			if(page.lang.indexOf(lang[i]) != -1 && page.nolang.indexOf(lang[i]) == -1){
+				l = lang[i];
+				break;
+			}
+		}
+
+		page.tran.setLang(l);
+
+		var warning = ()=>{
+			if(page.tran.getLang() == 'zh'){
+				tips.warning({
+				    title: 'Warnning',
+				    message: 'This page is only available in Chinese~',
+				});
+			}
+			if(page.tran.getLang() == 'en'){
+				tips.warning({
+				    title: '警告',
+				    message: '此页面仅提供英文版本~',
+				});
+			}
+		}
+
+		var ques = function(title, message, yes, no, lan){
+			tips.question({
+			    timeout: 20000,
+			    close: false,
+			    overlay: true,
+			    id: 'question',
+			    zindex: 999,
+			    title: title,
+			    message: message,
+			    position: 'center',
+			    buttons: [
+			        ['<button><b>'+yes+'</b></button>', function (instance, toast) {
+			 			var ll = [];
+			 			if(session.get('lang')){
+			 				ll = ll.concat(JSON.parse(atob(session.get('lang'))));
+			 			}
+			 			ll.push(lan);
+			 			session.set('lang', btoa(JSON.stringify(ll)));
+			 			page.tran.setLang(lan);
+			 			page.lang.push(lan);
+			            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+			 
+			        }, true],
+			        ['<button>'+no+'</button>', function (instance, toast) {
+			 			var ll = [];
+			 			if(session.get('nolang')){
+			 				ll = ll.concat(JSON.parse(atob(session.get('nolang'))));
+			 			}
+			 			ll.push(lan);
+			 			session.set('nolang', btoa(JSON.stringify(ll)));
+			 			page.nolang = ll;
+						if(lang.every((item)=>{
+							return page.nolang.indexOf(item) != -1;
+						})){
+							warning();
+						}
+			            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+			 			check();
+			        }],
+			    ]
+			});
+		}
+
+		var check = ()=>{
+			for(var i = 0; i < lang.length; i ++){
+				if(page.nolang.indexOf(lang[i]) == -1 && page.lang.indexOf(lang[i]) == -1){
+					if(lang[i] == 'zh'){
+						ques('Hey', 'Could you read Chinese? 您会中文吗？', 'Yes 是', "No 否", 'zh');
+					}
+					if(lang[i] == 'en'){
+						ques('Hey', 'Could you read English? 您会英语吗？', 'Yes 是', "No 否", 'en');
+					}
+					break;
+				}
+			}
+		}
+
+
+		if((page.nolang.indexOf(page.tran.getLang()) == -1 && page.lang.indexOf(page.tran.getLang()) == -1) || (page.nolang.indexOf(lang[0]) == -1 && page.lang.indexOf(lang[0]) == -1)){
+			check();
+		}
+
+		if(lang.every((item)=>{
+			return page.nolang.indexOf(item) != -1;
+		})){
+			warning();
+		}
+	}
+
+});
+
 
 /* audio player */
 function player_ini(){
@@ -489,7 +621,7 @@ function drawBrand(){
 	if(!session.status){
 		session_ajax_ini();
 	}
-	console.log('\n' + ' %c Ushio v3.2.5 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
+	console.log('\n' + ' %c Ushio v3.3.1 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
 }
 
 /* session health */
