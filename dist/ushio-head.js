@@ -72,7 +72,8 @@ var page = {
 var _t_ran_cookie = randomStr(16);
 cookie.set('_t_ran_cookie', _t_ran_cookie);
 if(cookie.get('_t_ran_cookie') != _t_ran_cookie && typeof allow_no_cookie == "undefined"){
-	alert('Your browser does not support cookie, Ushio service will quit..');
+	if((navigator.language||navigator.userLanguage).substr(0, 2) == 'zh') alert('您的浏览器不支持Cookie，Ushio服务将中止..');
+	else alert('Your browser does not support cookie, Ushio service will quit..');
 	page.ushio = false;
 	throw new Error('ushio::Not support cookie!');
 }

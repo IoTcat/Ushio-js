@@ -66,10 +66,10 @@ if (getHiddenProp())
         	page.window = false;
             log_update();
             var rand = Math.random() * 100;
-            if(rand < 30) document.title = '啊咧(⊙０⊙)';
-            else if(rand < 55) document.title = '快来戳我呀( ´∀｀)σ';
-            else if(rand < 75) document.title = '躲起来(´・ω・｀)';
-            else document.title = '哎呦，页面崩掉了吗(>﹏<)';
+            if(rand < 30) {if(page.tran.getLang() == 'zh')document.title = '啊咧(⊙０⊙)';else document.title = 'Aha (⊙０⊙)';}
+            else if(rand < 55) {if(page.tran.getLang() == 'zh')document.title = '快来戳我呀( ´∀｀)σ';else document.title = 'Click Me ( ´∀｀)σ';}
+            else if(rand < 75) {if(page.tran.getLang() == 'zh')document.title = '躲起来(´・ω・｀)';else document.title = 'Hiding(´・ω・｀)';}
+            else {if(page.tran.getLang() == 'zh')document.title = '哎呦，页面崩掉了吗(>﹏<)';else document.title = 'Wow, page crashed(>﹏<)';}
             setTimeout("document.title = page.title", 2400);
             clearInterval(page.TimerObj);
             page.TimerObj = null;
@@ -329,14 +329,16 @@ session.onload(function(){
 	var isStop = false;
 	if(typeof session.get('group') == "undefined"){
 		isStop = true;
-		alert('Ushio-session没有您的记录，将登出...');
+		if(page.tran.getLang() == 'zh') alert('Ushio-session没有您的记录，将登出...');
+		else alert('Ushio-session do not have your record, Ushio will logout..');
 		window.location.href='https://auth.yimian.xyz/checkout.php?from='+ btoa(page.url);
 		throw new Error('ushio::Redirect to Ushio-Logout!');
 	}
 	if(page.auth.indexOf('any') != -1){
 		if(session.get('group') == 'anonymous'){
 			isStop = true;
-			alert('此页面需要您的联系方式，将跳转至登录页面...');
+			if(page.tran.getLang() == 'zh') alert('此页面需要您的联系方式，将跳转至登录页面...');
+			else alert('This page needs your contact information..');
 			window.location.href='https://login.yimian.xyz/?from='+page.url;
 			throw new Error('ushio::Redirect to Ushio-Login!');
 		}
@@ -345,7 +347,8 @@ session.onload(function(){
 			if(!isStop){
 				if(!session.get(item)){
 					isStop = true;
-					alert('此页面需要您的'+item+'，将跳转至登录页面...');
+					if(page.tran.getLang() == 'zh') alert('此页面需要您的'+item+'，将跳转至登录页面...');
+					else  alert('This page needs your '+item+'..');
 					window.location.href='https://login.yimian.xyz/?require='+item+'&from='+page.url;
 					throw new Error('ushio::Redirect to Ushio-Login!');
 				}
@@ -366,7 +369,8 @@ session.onload(function(){
 			}
 		});
 		if(!cnt){
-			alert('本页面需要'+page.group[cnt]+'权限，您被拒绝访问。如有疑惑请联系站长i@iotcat.me!');
+			if(page.tran.getLang() == 'zh') alert('本页面需要'+page.group[cnt]+'权限，您被拒绝访问。如有疑惑请联系站长i@iotcat.me!');
+			else alert('You are denied to access this page because you do not have '+page.group[cnt]+' permission. Please contact i@iotcat.me for further information!');
 			window.location.href='https://guide.yimian.xyz/';
 		}
 	}
@@ -507,7 +511,8 @@ function player_ini(){
 	            	window.aplayers[0].play();
 	            	if(window.aplayers[0].audio.paused) {
 	            		window.aplayers[0].notice('Click Here', 5000, 0.8);
-	            		tips.info({message: "戳左下角继续音乐哦(^_−)☆"});
+	            		if(page.tran.getLang() == 'zh') tips.info({message: "戳左下角继续音乐哦(^_−)☆"});
+	            		else tips.info({message: "Click bottom left conner to continue music (^_−)☆"});
 	            	};
 	            }
 	            
@@ -616,12 +621,66 @@ var tips = {
 	}
 }
 
+/* Ushio Selection */
+page.showUshio = function(proj){
+	if(page.tran.getLang() == 'zh'){
+		var title = '小汐菜单';
+		var guide = '导航';
+		var cool = '主页';
+		var github = '源码';
+		var setting = '设置';
+		var close = '关闭';
+	}else{
+		var title = 'Ushio Menu';
+		var guide = 'Guide';
+		var cool = 'Cool';
+		var github = 'Github';
+		var setting = 'Setting';
+		var close = 'Close';
+	}
+
+	tips.question({
+	    timeout: 20000,
+	    close: false,
+	    overlay: true,
+	    id: 'ushio-selection',
+	    zindex: 999,
+	    title: title,
+	    color: '#80cbff',
+	    message: '',
+	    position: 'center',
+	    buttons: [
+	        ['<button>'+guide+'</button>', function (instance, toast) {
+	        	window.location.href='https://guide.yimian.xyz/';
+	            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+	        }, true],
+	        ['<button>'+cool+'</button>', function (instance, toast) {
+	        	window.location.href='https://ushio.cool/';
+	            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+	        }, true],
+	        ['<button>'+github+'</button>', function (instance, toast) {
+	        	window.location.href='https://github.com/iotcat/'+proj;
+	            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+	        }, true],
+	        ['<button>'+setting+'</button>', function (instance, toast) {
+	        	window.location.href='https://login.yimian.xyz/';
+	            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+	        }, true],
+            ['<button><b>'+close+'</b></button>', function (instance, toast) {
+                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+            }, true]
+	    ]
+	});
+}
+
+
+
 /* brand */
 function drawBrand(){
 	if(!session.status){
 		session_ajax_ini();
 	}
-	console.log('\n' + ' %c Ushio v3.3.1 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
+	console.log('\n' + ' %c Ushio v3.3.2 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
 }
 
 /* session health */
