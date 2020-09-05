@@ -680,7 +680,7 @@ function drawBrand(){
 	if(!session.status){
 		session_ajax_ini();
 	}
-	console.log('\n' + ' %c Ushio v3.3.3 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
+	console.log('\n' + ' %c Ushio v3.3.4 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
 }
 
 /* session health */
