@@ -62,6 +62,7 @@ if (getHiddenProp())
     document.addEventListener(evtname, function () 
     {
         if(document[getVisibilityState()] == "hidden") {
+        	page.title = document.title;
         	session.close();
         	page.window = false;
             log_update();
@@ -382,8 +383,11 @@ session.onload(function(){
 	if(typeof lang != "undefined" && lang.length > 0){
 		var l = lang[0];
 		if(session.get('lang')){
+			page.lang = [(navigator.language||navigator.userLanguage).substr(0, 2)];
 			page.lang = page.lang.concat(JSON.parse(atob(session.get('lang'))));
 			cookie.set('_lang', session.get('lang'));
+		}else{
+			cookie.del('_lang');
 		}
 		if(session.get('nolang')){
 			page.nolang = JSON.parse(atob(session.get('nolang')));
@@ -622,56 +626,161 @@ var tips = {
 }
 
 /* Ushio Selection */
-page.showUshio = function(proj){
-	if(page.tran.getLang() == 'zh'){
-		var title = '小汐菜单';
-		var guide = '导航';
-		var cool = '主页';
-		var github = '源码';
-		var setting = '设置';
-		var close = '关闭';
-	}else{
-		var title = 'Ushio Menu';
-		var guide = 'Guide';
-		var cool = 'Cool';
-		var github = 'Github';
-		var setting = 'Setting';
-		var close = 'Close';
-	}
+page.showUshio = function(){
+	session.onload(function(){
 
-	tips.question({
-	    timeout: 20000,
-	    close: false,
-	    overlay: true,
-	    id: 'ushio-selection',
-	    zindex: 999,
-	    title: title,
-	    color: '#80cbff',
-	    message: '',
-	    position: 'center',
-	    buttons: [
-	        ['<button>'+guide+'</button>', function (instance, toast) {
-	        	window.location.href='https://guide.yimian.xyz/';
-	            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-	        }, true],
-	        ['<button>'+cool+'</button>', function (instance, toast) {
-	        	window.location.href='https://ushio.cool/';
-	            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-	        }, true],
-	        ['<button>'+github+'</button>', function (instance, toast) {
-	        	window.location.href='https://github.yimian.xyz/iotcat/'+proj;
-	            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-	        }, true],
-	        ['<button>'+setting+'</button>', function (instance, toast) {
-	        	window.location.href='https://login.yimian.xyz/';
-	            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-	        }, true],
-            ['<button><b>'+close+'</b></button>', function (instance, toast) {
-                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-            }, true]
-	    ]
+		if(page.tran.getLang() == 'zh'){
+			var title = 'Ushio菜单';
+			var guide = '导航';
+			var cool = '主页';
+			var github = '源码';
+			var setting = '账户设置';
+			var close = '关闭';
+			var nickname = '访客';
+
+			if(session.get('group') == 'anonymous'){
+				setting = '登录/注册';
+			}
+
+			if(session.get('nickname')){
+				nickname = session.get('nickname');
+			}
+
+			var message = '你好，'+nickname;
+
+			if(typeof lang != 'undefined' && lang.length > 0){
+				message += '<br/><br/>此页面提供以下语言版本，您可以点击切换：';
+				lang.forEach(function(lan){
+					message += ' <button onClick="page.tran.setLang(`'+lan+'`);tips.info({message: `语言切换成功！`});">'+lan+'</button>, ';
+				});
+			}
+
+		}else{
+			var title = 'Ushio Menu';
+			var guide = 'Guide';
+			var cool = 'Cool';
+			var github = 'Github';
+			var setting = 'Account Setting';
+			var close = 'Close';
+			var nickname = 'Visitor';
+
+			if(session.get('group') == 'anonymous'){
+				setting = 'Login/Register';
+			}
+
+			if(session.get('nickname')){
+				nickname = session.get('nickname');
+			}
+
+			var message = 'Hi, '+nickname;
+
+			if(typeof lang != 'undefined' && lang.length > 0){
+				message += '<br/><br/>This page provides these language versions, you may click them to switch：';
+				lang.forEach(function(lan){
+					message += ' <button onClick="page.tran.setLang(`'+lan+'`);tips.info({message: `Switch successfully!!`});">'+lan+'</button>, ';
+				});
+			}
+		}
+
+		message += '<br/><br/>';
+
+
+		tips.question({
+		    timeout: 30000,
+		    close: false,
+		    overlay: true,
+		    id: 'ushio-selection',
+		    zindex: 999,
+		    title: title,
+		    color: '#80cbff',
+		    message: message,
+		    position: 'center',
+		    buttons: [
+		        ['<button>'+guide+'</button>', function (instance, toast) {
+		        	window.location.href='https://guide.yimian.xyz/';
+		            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+		        }, true],
+		        ['<button>'+cool+'</button>', function (instance, toast) {
+		        	window.location.href='https://ushio.cool/';
+		            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+		        }, true],
+		        ['<button>'+github+'</button>', function (instance, toast) {
+		        	window.location.href='https://github.yimian.xyz/iotcat/'+page.proj;
+		            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+		        }, true],
+		        ['<button>'+setting+'</button>', function (instance, toast) {
+		        	window.location.href='https://login.yimian.xyz/';
+		            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+		        }, true],
+	            ['<button><b>'+close+'</b></button>', function (instance, toast) {
+	                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+	            }, true]
+		    ]
+		});
+
 	});
 }
+
+
+
+page.setting={
+	setting:{
+		startline:0, //起始行
+		scrollto:0, //滚动到指定位置
+		scrollduration:400, //滚动过渡时间
+		fadeduration:[500,100] //淡出淡现消失
+	},
+	controlHTML:'<img src="https://cdn.yimian.xyz/ushio-js/setting.png" class="imgRotate" style="width:34px; height:34px; border:0;z-index: 99999; " />', //返回顶部按钮
+	controlattrs:{offsetx:20,offsety:430},//返回按钮固定位置
+	anchorkeyword:"#_setting",
+	state:{
+		isvisible:false,
+		shouldvisible:false
+	},scrollup:function(){
+		/*if(!this.cssfixedsupport){
+			this.$control.css({opacity:0});
+		}
+		var dest=isNaN(this.setting.scrollto)?this.setting.scrollto:parseInt(this.setting.scrollto);
+		if(typeof dest=="string"&&jQuery("#"+dest).length==1){
+			dest=jQuery("#"+dest).offset().top;
+		}else{
+			dest=0;
+		}
+		this.$body.animate({scrollTop:dest},this.setting.scrollduration);*/
+		page.showUshio();
+	},keepfixed:function(){
+		var $window=jQuery(window);
+		var controlx=$window.scrollLeft()+$window.width()-this.$control.width()-this.controlattrs.offsetx;
+		var controly=$window.scrollTop()+$window.height()-this.$control.height()-this.controlattrs.offsety;
+		this.$control.css({left:controlx+"px",top:controly+"px"});
+	},togglecontrol:function(){
+		var scrolltop=jQuery(window).scrollTop();
+		if(!this.cssfixedsupport){
+			this.keepfixed();
+		}
+		this.state.shouldvisible=(scrolltop>=this.setting.startline)?true:false;
+		if(this.state.shouldvisible&&!this.state.isvisible){
+			this.$control.stop().animate({opacity:1},this.setting.fadeduration[0]);
+			this.state.isvisible=true;
+		}else{
+			if(this.state.shouldvisible==false&&this.state.isvisible){
+				this.$control.stop().animate({opacity:0},this.setting.fadeduration[1]);
+				this.state.isvisible=false;
+			}
+		}
+	},init:function(){
+		jQuery(document).ready(function($){
+			var mainobj=page.setting;
+			var iebrws=document.all;
+			mainobj.cssfixedsupport=!iebrws||iebrws&&document.compatMode=="CSS1Compat"&&window.XMLHttpRequest;
+			mainobj.$body=(window.opera)?(document.compatMode=="CSS1Compat"?$("html"):$("body")):$("html,body");
+			mainobj.$control=$('<div id="topcontrol" >'+mainobj.controlHTML+"</div>").css({position:mainobj.cssfixedsupport?"fixed":"absolute",'z-index': 9999,bottom:mainobj.controlattrs.offsety,right:mainobj.controlattrs.offsetx,opacity:0,cursor:"pointer"}).attr({title:"Ushio Setting"}).click(function(){mainobj.scrollup();return false;}).appendTo("body");if(document.all&&!window.XMLHttpRequest&&mainobj.$control.text()!=""){mainobj.$control.css({width:mainobj.$control.width()});}mainobj.togglecontrol();
+			$('a[href="'+mainobj.anchorkeyword+'"]').click(function(){mainobj.scrollup();return false;});
+			$(window).bind("scroll resize",function(e){mainobj.togglecontrol();});
+		});
+	}
+};
+page.setting.init();
 
 
 
@@ -680,7 +789,7 @@ function drawBrand(){
 	if(!session.status){
 		session_ajax_ini();
 	}
-	console.log('\n' + ' %c Ushio v3.3.4 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
+	console.log('\n' + ' %c Ushio v3.4.1 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
 }
 
 /* session health */
