@@ -1,6 +1,6 @@
 {
   "name": "ushio-js",
-  "version": "3.4.5",
+  "version": "3.4.6",
   "main": "ushio-head.js",
   "repository": "https://github.com/iotcat/ushio-js",
   "author": "iotcat <i@iotcat.me>",
