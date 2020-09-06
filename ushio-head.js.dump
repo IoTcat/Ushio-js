@@ -132,7 +132,7 @@ if(cookie.get('_lang')){
 			$('.\\.'+l).show();
 			page.tran.getLang = function(){return l;}
 		}
-
+		page.tran.getLang = function(){return (navigator.language||navigator.userLanguage).substr(0, 2);}
 		$(function(){
 			page.tran.setLang(l);
 		});
