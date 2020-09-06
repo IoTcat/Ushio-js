@@ -64,9 +64,9 @@ var page = {
 		return vars;
 	}(),
 	copyright: {
-		year: "Â© 2018-" + (new Date()).getFullYear(),
+		year: "æ¼ 2018-" + (new Date()).getFullYear(),
 		name: '<a id="ushio-iotcat" href="https://iotcat.me">iotcat</a>',
-		full: "Â© 2018-" + (new Date()).getFullYear() + ' ' + '<a id="ushio-iotcat" href="https://iotcat.me">iotcat</a>'
+		full: "æ¼ 2018-" + (new Date()).getFullYear() + ' ' + '<a id="ushio-iotcat" href="https://iotcat.me">iotcat</a>'
 	},
 
 };
@@ -86,7 +86,7 @@ setInterval(function(){
 var _t_ran_cookie = randomStr(16);
 cookie.set('_t_ran_cookie', _t_ran_cookie);
 if(cookie.get('_t_ran_cookie') != _t_ran_cookie && typeof allow_no_cookie == "undefined"){
-	if((navigator.language||navigator.userLanguage).substr(0, 2) == 'zh') alert('ÄúµÄä¯ÀÀÆ÷²»Ö§³ÖCookie£¬Ushio·şÎñ½«ÖĞÖ¹..');
+	if((navigator.language||navigator.userLanguage).substr(0, 2) == 'zh') alert('æ‚¨çš„æµè§ˆå™¨ä¸æ”¯æŒCookieï¼ŒUshioæœåŠ¡å°†ä¸­æ­¢..');
 	else alert('Your browser does not support cookie, Ushio service will quit..');
 	page.ushio = false;
 	throw new Error('ushio::Not support cookie!');

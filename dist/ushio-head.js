@@ -25,7 +25,7 @@ function randomStr(length) {
 }
 
 /* include css */
-if(typeof block_aplayer == "undefined"){
+if(/*typeof block_aplayer == "undefined"*/true){
 	if(window.screen.width < 600) document.write('<link rel="stylesheet" href="https://cdn.yimian.xyz/ushio-js/ushio-js.mobile.min.css">');
 	else document.write('<link rel="stylesheet" href="https://cdn.yimian.xyz/ushio-js/ushio-js.min.css">');
 }

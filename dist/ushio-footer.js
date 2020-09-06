@@ -321,7 +321,7 @@ session.onload(function(){
 	console.log('Ushio - session loaded..  '+(new Date().valueOf()/1000 - page.openTime)+'s');
 });
 session.onload(function(){
-	if(typeof block_aplayer == "undefined"){
+	if(typeof block_aplayer == "undefined" || session.get('aplayer/status') == 'play'){
   		player_ini();
   	}
 });
@@ -783,15 +783,6 @@ page.setting={
 page.setting.init();
 
 
-
-/* brand */
-function drawBrand(){
-	if(!session.status){
-		session_ajax_ini();
-	}
-	console.log('\n' + ' %c Ushio v3.4.1 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
-}
-
 /* session health */
 SessionLastCntTime = new Date().valueOf();
 var session_errCnt = 1;
@@ -811,3 +802,13 @@ setInterval(()=>{
 		throw new Error('ushio::Page Reload!');
 	}
 }, 7000);
+
+
+
+/* brand */
+function drawBrand(){
+	if(!session.status){
+		session_ajax_ini();
+	}
+	console.log('\n' + ' %c Ushio v3.4.2 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
+}
