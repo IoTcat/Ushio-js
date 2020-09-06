@@ -677,7 +677,7 @@ page.showUshio = function(){
 
 			var message = '你好，'+nickname;
 
-			if(typeof lang != 'undefined' && lang.length > 0){
+			if(typeof lang != 'undefined' && lang.length > 1){
 				message += '<br/><br/>此页面提供以下语言版本，您可以点击切换：';
 				lang.forEach(function(lan){
 					message += ' <button onClick="page.tran.setLang(`'+lan+'`);tips.info({message: `语言切换成功！`});">'+lan+'</button>, ';
@@ -703,7 +703,7 @@ page.showUshio = function(){
 
 			var message = 'Hi, '+nickname;
 
-			if(typeof lang != 'undefined' && lang.length > 0){
+			if(typeof lang != 'undefined' && lang.length > 1){
 				message += '<br/><br/>This page provides these language versions, you may click them to switch：';
 				lang.forEach(function(lan){
 					message += ' <button onClick="page.tran.setLang(`'+lan+'`);tips.info({message: `Switch successfully!!`});">'+lan+'</button>, ';
