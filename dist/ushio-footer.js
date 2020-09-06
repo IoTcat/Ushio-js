@@ -323,7 +323,7 @@ session.onload(function(){
 session.onload(function(){
 	if(typeof block_aplayer == "undefined" || session.get('aplayer/status') == 'play'){
 		if(typeof block_aplayer == "undefined" && session.get('aplayer/status') != 'play'){
-			setTimeout(function(){player_ini();}, 15000);
+			setTimeout(function(){player_ini();}, 25000);
 		}else{
   			player_ini();
 		}
@@ -579,35 +579,55 @@ var tips = {
 	info: function(params){
 		tips.checkParams(params);
 		if(params.title === undefined){
-			params.title = "info";
+			if(page.tran.getLang() == 'zh'){
+				params.title = "信息";
+			}else{
+				params.title = "info";
+			}
 		}
 		tipsObj.info(params);
 	},
 	warning: function(params){
 		tips.checkParams(params);
 		if(params.title === undefined){
-			params.title = "warning";
+			if(page.tran.getLang() == 'zh'){
+				params.title = "警告";
+			}else{
+				params.title = "warning";
+			}
 		}
 		tipsObj.warning(params);
 	},
 	success: function(params){
 		tips.checkParams(params);
 		if(params.title === undefined){
-			params.title = "success";
+			if(page.tran.getLang() == 'zh'){
+				params.title = "成功";
+			}else{
+				params.title = "success";
+			}
 		}
 		tipsObj.success(params);
 	},
 	error: function(params){
 		tips.checkParams(params);
 		if(params.title === undefined){
-			params.title = "error";
+			if(page.tran.getLang() == 'zh'){
+				params.title = "错误";
+			}else{
+				params.title = "error";
+			}
 		}
 		tipsObj.error(params);
 	},
 	question: function(params){
 		tips.checkParams(params);
 		if(params.title === undefined){
-			params.title = "question";
+			if(page.tran.getLang() == 'zh'){
+				params.title = "问题";
+			}else{
+				params.title = "question";
+			}
 		}
 		tipsObj.question(params);
 	},
@@ -618,6 +638,9 @@ var tips = {
 		if(params.message === undefined){
 			params.message = "No Content!!";
 		}
+		if(params.zindex === undefined){
+			params.zindex = 9999;
+		}
 		if(params.progressBarColor === undefined){
 			params.progressBarColor = '#'+('00000'+ (Math.random()*0x1000000<<0).toString(16)).substr(-6);
 		}
@@ -627,6 +650,7 @@ var tips = {
 		if(params.progressBarEasing === undefined){
 			params.progressBarEasing = 'ease';
 		}
+		setTimeout(function(){$('.iziToast-wrapper').css('z-index', '9999');}, 300);
 	}
 }
 
@@ -710,7 +734,7 @@ page.showUshio = function(){
 		            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
 		        }, true],
 		        ['<button>'+github+'</button>', function (instance, toast) {
-		        	window.location.href='https://github.yimian.xyz/iotcat/'+page.proj;
+		        	window.location.href='https://github.yimian.xyz/'+page.proj;
 		            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
 		        }, true],
 		        ['<button>'+setting+'</button>', function (instance, toast) {
@@ -822,5 +846,5 @@ function drawBrand(){
 	if(!session.status){
 		session_ajax_ini();
 	}
-	console.log('\n' + ' %c Ushio v3.4.5 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
+	console.log('\n' + ' %c Ushio v3.4.7 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
 }
