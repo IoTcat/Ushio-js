@@ -87,7 +87,7 @@ if (getHiddenProp())
     {
         if(document[getVisibilityState()] == "hidden") {
         	page.title = document.title;
-        	session.close();
+        	//session.close();
         	page.window = false;
             log_update();
             var rand = Math.random() * 100;
@@ -104,7 +104,7 @@ if (getHiddenProp())
             document.title = page.title;
             page.window = true;
             page.LastWindowOpenTime = new Date().valueOf();
-            session.open();
+            //session.open();
             if(page.TimerObj == null) page.TimerObj = setInterval("page.Timer++", 1000);
         }
     }, false);
@@ -885,5 +885,5 @@ function drawBrand(){
 	if(!session.status){
 		session_ajax_ini();
 	}
-	console.log('\n' + ' %c Ushio v3.4.11 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
+	console.log('\n' + ' %c Ushio v3.4.12 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
 }
