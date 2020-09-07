@@ -521,8 +521,8 @@ session.onload(function(){
 /* audio player */
 function player_ini(){
 
-    $.post("https://api.yimian.xyz/msc/?type=single&id="+((session.get('aplayer/playing') == undefined)?'477215840':session.get('aplayer/playing'))+"&limit=15&random=true", function(e){
-        	$.post("https://api.yimian.xyz/msc/?type=playlist&id="+((typeof aplayer_playlist == "undefined")?'808097971':aplayer_playlist)+"&limit=14&random=true", function(res){
+    $.post("https://api.yimian.xyz/msc/?type=single&id="+((session.get('aplayer/playing') == undefined)?'531786301':session.get('aplayer/playing'))+"&limit=15&random=true", function(e){
+        	$.post("https://api.yimian.xyz/msc/?type=playlist&id="+((typeof aplayer_playlist == "undefined")?'2675649523':aplayer_playlist)+"&limit=14&random=true", function(res){
         		res.unshift(e);
         		$('body').append('<div class="aplayer-footer"><div class="ap-f" id="ap-f"></div></div>');
 	            var a = new APlayer({
@@ -838,25 +838,16 @@ page.setting={
 			mainobj.$control=$('<div id="_setting" >'+mainobj.controlHTML+"</div>").css({position:mainobj.cssfixedsupport?"fixed":"absolute",'z-index': 9999999,bottom:mainobj.controlattrs.offsety,right:mainobj.controlattrs.offsetx,opacity:0,cursor:"pointer"}).attr({title:"Ushio Setting"}).click(function(){/*mainobj.scrollup();return false;*/}).appendTo("body");if(document.all&&!window.XMLHttpRequest&&mainobj.$control.text()!=""){mainobj.$control.css({width:mainobj.$control.width()});}mainobj.togglecontrol();
 			//$('a[href="'+mainobj.anchorkeyword+'"]').click(function(){mainobj.scrollup();return false;});
 			$(window).bind("scroll resize",function(e){/*mainobj.togglecontrol();*/});
-			$('#_setting').draggable({
-				start: function() {
-			        mainobj.lastStartTime = new Date().valueOf();
-			     },
-			     stop: function() {
-			        mainobj.lastStopTime = new Date().valueOf();
-			        console.log(mainobj.lastStopTime - mainobj.lastStartTime);
-			        if(mainobj.lastStopTime - mainobj.lastStartTime > 0 && mainobj.lastStopTime - mainobj.lastStartTime < 270){
-			        	mainobj.scrollup();
-			        }
+			$('#_setting').draggable();
+			$('#_setting').on(('ontouchend' in document)?'touchstart':'mousedown', function(){
+				mainobj.lastStartTime = new Date().valueOf();
+			});
+			$('#_setting').on(('ontouchend' in document)?'touchend':'mouseup', function(){
+				mainobj.lastStopTime = new Date().valueOf();
+				if(mainobj.lastStopTime - mainobj.lastStartTime > 0 && mainobj.lastStopTime - mainobj.lastStartTime < 370){
+			        mainobj.scrollup();
 			     }
-  			});
-  			$('#_setting').click(function(){
-  				setTimeout(function(){
-  					if(!$(this).hasClass('dragging')){
-  						mainobj.scrollup();
-  					}
-  				}, 10);
-  			});
+			});
 		});
 	}
 };
