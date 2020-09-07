@@ -758,10 +758,10 @@ page.showUshio = function(){
 		        	window.location.href='https://guide.yimian.xyz/';
 		            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
 		        }, true],
-		        ['<button>'+cool+'</button>', function (instance, toast) {
+		        /*['<button>'+cool+'</button>', function (instance, toast) {
 		        	window.location.href='https://ushio.cool/';
 		            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-		        }, true],
+		        }, true],*/
 		        ['<button>'+github+'</button>', function (instance, toast) {
 		        	window.location.href='https://github.yimian.xyz/'+page.proj;
 		            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
@@ -887,5 +887,5 @@ function drawBrand(){
 	if(!session.status){
 		session_ajax_ini();
 	}
-	console.log('\n' + ' %c Ushio v3.4.14 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
+	console.log('\n' + ' %c Ushio v3.4.15 %c ' + page.ip  + ' %c '+ ((session.method == 'WebSocket')?'WebSocket':'Ajax') +' %c https://ushio.cool/ \n', 'color: #FFFFCC; background: #030307; padding:5px 0;', 'color: #FF99FF; background: #030307; padding:5px 0;', 'color: '+((session.method == 'WebSocket')?'#91FF3A':'#F8FF00')+'; background: #030307; padding:5px 0;', 'background: #4682B4; padding:5px 0;');
 }
