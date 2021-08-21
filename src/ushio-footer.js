@@ -829,7 +829,7 @@ page.showUshio = function(){
 		            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
 		        }, true],
 		        ['<button>'+setting+'</button>', function (instance, toast) {
-		        	window.location.href='https://login.yimian.xyz/';
+		        	window.location.href='https://login.yimian.xyz/?from='+page.url;
 		            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
 		        }, true],
 	            ['<button><b>'+close+'</b></button>', function (instance, toast) {

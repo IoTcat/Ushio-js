@@ -39,7 +39,7 @@ if(typeof block_tips == "undefined"){
 
 /* global default page config */
 var page = {
-	version: 'v3.5.2',
+	version: 'v3.5.3',
 	url: window.location.href,
 	title: 'Lovely Ushio',
 	icon: 'https://cdn.yimian.xyz/img/head/head3r.ico',
