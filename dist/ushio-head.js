@@ -39,7 +39,7 @@ if(typeof block_tips == "undefined"){
 
 /* global default page config */
 var page = {
-	version: 'v3.5.1',
+	version: 'v3.5.2',
 	url: window.location.href,
 	title: 'Lovely Ushio',
 	icon: 'https://cdn.yimian.xyz/img/head/head3r.ico',
@@ -152,7 +152,15 @@ if(cookie.get('_lang')){
 })();
 
 
+
+
 /* session cache */
+var session = {
+	get: function(s){
+		return page.session.hasOwnProperty(s) && page.session[s];
+	}
+};
+
 function getCache(){
 	let cache = null;
 	try{
@@ -162,6 +170,7 @@ function getCache(){
 			cache = null;
 		}else{
 			if(cache.data.hash){
+				session.LastSyncTime = cache.LastSyncTime;
 				cache = cache.data;
 			}else{
 				throw 'no hash';
@@ -176,11 +185,6 @@ function getCache(){
 
 
 /* session ini */
-var session = {
-	get: function(s){
-		return page.session.hasOwnProperty(s) && page.session[s];
-	}
-};
 session.onload = function(f, enCache, isFirst){
 	if((enCache&&page.cache&&getCache()) || session.status){
 		if(isFirst == true){

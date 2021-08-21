@@ -393,15 +393,23 @@ session.onload(function(){
 	}, 3000);
 });
 session.onload(function(){
-	if(typeof block_aplayer == "undefined" || session.get('aplayer/status') == 'play'){
-		if(typeof block_aplayer == "undefined" && session.get('aplayer/status') != 'play'){
-			setTimeout(function(){player_ini();}, 25000);
-		}else{
-  			player_ini();
-		}
+	function player_ini_pre(){
+		if(typeof block_aplayer == "undefined" || session.get('aplayer/status') == 'play'){
+			if(typeof block_aplayer == "undefined" && session.get('aplayer/status') != 'play'){
+				setTimeout(function(){player_ini();}, 25000);
+			}else{
+	  			player_ini();
+			}
 
-  	}
-});
+	  	}
+	}
+	if(session.LastSyncTime < new Date().valueOf() - 12*1000){
+		session.onload(player_ini_pre);
+	}else{
+		player_ini_pre();
+	}
+
+}, true);
 
 
 session.onload(function(){
@@ -589,30 +597,37 @@ function player_ini(){
 	            window.aplayers || (window.aplayers = []),
 	            window.aplayers.push(a);
 	            window.aplayers[0].lrc.hide();
+	            adjustSeek();
 	            if(session.get('aplayer/status') == 'play') {
 	            	window.aplayers[0].play();
 	            	if(window.aplayers[0].audio.paused) {
-	            		window.aplayers[0].notice('Click Here', 5000, 0.8);
-	            		if(page.tran.getLang() == 'zh') tips.info({message: "戳左下角继续音乐哦(^_−)☆"});
-	            		else tips.info({message: "Click bottom left conner to continue music (^_−)☆"});
+	            		//window.aplayers[0].notice('Click Here', 20000, 0.8);
+	            		if(page.tran.getLang() == 'zh') tips.info({timeout: 13000, position:"bottomCenter",message: "<--戳左下角继续音乐哦(^_−)☆"});
+	            		else tips.info({timeout: 13000, position:"bottomCenter",message: "Click bottom left conner to continue music (^_−)☆"});
 	            	};
 	            }
 	            
 	            window.aplayers[0].on('play', function () {
-	    			session.set('aplayer/status', 'play');
-	    			window.aplayers[0].lrc.show();
-	    			if(window.aplayers[0].firstTime === undefined){
+	    			session.onload(function(){
+	    				session.set('aplayer/status', 'play');
+	    			});
+		    			window.aplayers[0].lrc.show();
+		    			if(window.aplayers[0].firstTime === undefined){
 
-	    				adjustSeek();
-	    				window.aplayers[0].firstTime = false;
-	    			}
+		    				//adjustSeek();
+		    				window.aplayers[0].firstTime = false;
+		    			}
 				});
 	            window.aplayers[0].on('pause', function () {
-	    			session.set('aplayer/status', 'pause');
-	    			window.aplayers[0].lrc.hide();
+	            	session.onload(function(){
+		    			session.set('aplayer/status', 'pause');
+		    		});
+		    		window.aplayers[0].lrc.hide();
 				});
 	            window.aplayers[0].on('listswitch', function(e){
-	                session.set('aplayer/playing', window.aplayers[0].list.audios[e.index].id);
+	            	session.onload(function(){
+	                	session.set('aplayer/playing', window.aplayers[0].list.audios[e.index].id);
+	            	});
 	            });
 	            setInterval(function(){
 	                try{
