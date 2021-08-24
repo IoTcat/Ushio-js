@@ -92,11 +92,13 @@ if (getHiddenProp())
         	page.window = false;
             log_update();
             var rand = Math.random() * 100;
-            if(rand < 30) {if(page.tran.getLang() == 'zh')document.title = '啊咧(⊙０⊙)';else document.title = 'Aha (⊙０⊙)';}
-            else if(rand < 55) {if(page.tran.getLang() == 'zh')document.title = '快来戳我呀( ´∀｀)σ';else document.title = 'Click Me ( ´∀｀)σ';}
-            else if(rand < 75) {if(page.tran.getLang() == 'zh')document.title = '躲起来(´・ω・｀)';else document.title = 'Hiding(´・ω・｀)';}
-            else {if(page.tran.getLang() == 'zh')document.title = '哎呦，页面崩掉了吗(>﹏<)';else document.title = 'Wow, page crashed(>﹏<)';}
-            setTimeout("document.title = page.title", 2400);
+            let title = '';
+            if(rand < 30) {if(page.tran.getLang() == 'zh')title = '啊咧(⊙０⊙)';else title = 'Aha (⊙０⊙)';}
+            else if(rand < 55) {if(page.tran.getLang() == 'zh')title = '快来戳我呀( ´∀｀)σ';else title = 'Click Me ( ´∀｀)σ';}
+            else if(rand < 75) {if(page.tran.getLang() == 'zh')title = '躲起来(´・ω・｀)';else title = 'Hiding(´・ω・｀)';}
+            else {if(page.tran.getLang() == 'zh')title = '哎呦，页面崩掉了吗(>﹏<)';else title = 'Wow, page crashed(>﹏<)';}
+			setTimeout(function(){document.title = title;}, 800);            
+            setTimeout("document.title = page.title", 3800);
             clearInterval(page.TimerObj);
             page.TimerObj = null;
         }
@@ -134,6 +136,8 @@ async function log_ini(){
             who();
         });
         updateHref();
+        fast_fetch();
+
 }
 
 
@@ -161,6 +165,18 @@ if(page.cache && getCache()){
             session_ini_pre();
         }
 })*/
+
+
+function fast_fetch(){
+	$.get('https://session.yimian.xyz/php/get.php?fp='+page.fp+'&flag='+page.flag+'&mask='+page.mask, function(res2){
+		res2 = JSON.parse(res2);
+		page.session = res2;
+		//session.status = true;
+		session.LastSyncTime = new Date().valueOf();
+		session.method = 'fast_fetch';
+		console.log('Ushio - Fast Fetched.. '+(new Date().valueOf()/1000 - page.openTime)+'s');
+  	}).fail(function () {session.status = false;console.log('Ushio - Fast Fetch Failed!!');});
+}
 
 
 async function session_ini_pre () {
@@ -206,7 +222,7 @@ function updateHref(){
 
 
 /* cache session cohere */
-/*
+
 function checkCacheCohere(){
 	let chash = null;
 
@@ -216,11 +232,12 @@ function checkCacheCohere(){
 		chash = null;
 	}
 
-	if(chash != page.session.hash){
+	if(chash && chash != page.session.hash){
+		setTimeout('window.location.reload();', 2000);
 		tips.question({
 			timeout: 9999999,
 			title: 'Warning',
-			message: 'Session has changed. Please reload this page!',
+			message: 'Session has changed. This page will reload!',
     		position: 'center',
     		color: 'red',
 			buttons: [
@@ -233,7 +250,7 @@ function checkCacheCohere(){
 		});
 	}
 }
-*/
+
 
 
 /* connect to session server */
@@ -404,7 +421,7 @@ session.onload(function(){
 	  	}
 	}
 	if(session.LastSyncTime < new Date().valueOf() - 12*1000){
-		session.onload(player_ini_pre);
+		session.onload(player_ini_pre, false, true);
 	}else{
 		player_ini_pre();
 	}
@@ -416,10 +433,25 @@ session.onload(function(){
 	var isStop = false;
 	if(typeof session.get('group') == "undefined"){
 		isStop = true;
-		if(page.tran.getLang() == 'zh') alert('Ushio-session没有您的记录，将登出...');
-		else alert('Ushio-session do not have your record, Ushio will logout..');
-		window.location.href='https://auth.yimian.xyz/checkout.php?from='+ btoa(page.url);
-		throw new Error('ushio::Redirect to Ushio-Logout!');
+		tips.question({
+			timeout: 9999999,
+			title: 'Warning',
+			message: (page.tran.getLang() == 'zh')?'Ushio-session没有您的记录！！':'Session Lost!! ',
+    		position: 'center',
+    		color: 'red',
+			buttons: [
+		        ['<button><b>RELOAD</b></button>', function (instance, toast) {
+					window.location.reload();
+					throw new Error('ushio::Page Reload!');
+					instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+		        }, true],
+		        ['<button>LOGOUT</button>', function (instance, toast) {
+		            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+		            window.location.href='https://auth.yimian.xyz/checkout.php?from='+ btoa(page.url);
+					throw new Error('ushio::Redirect to Ushio-Logout!');
+		        }],
+		    ]
+		});
 	}
 	if(page.auth.indexOf('any') != -1){
 		if(session.get('group') == 'anonymous'){
@@ -520,7 +552,9 @@ session.onload(function(){
 			 				ll = ll.concat(JSON.parse(atob(session.get('lang'))));
 			 			}
 			 			ll.push(lan);
-			 			session.set('lang', btoa(JSON.stringify(ll)));
+			 			session.onload(function(){
+			 				session.set('lang', btoa(JSON.stringify(ll)));
+			 			});
 			 			page.tran.setLang(lan);
 			 			page.lang.push(lan);
 			            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
@@ -532,7 +566,9 @@ session.onload(function(){
 			 				ll = ll.concat(JSON.parse(atob(session.get('nolang'))));
 			 			}
 			 			ll.push(lan);
-			 			session.set('nolang', btoa(JSON.stringify(ll)));
+			 			session.onload(function(){
+			 				session.set('nolang', btoa(JSON.stringify(ll)));
+			 			});
 			 			page.nolang = ll;
 						if(lang.every((item)=>{
 							return page.nolang.indexOf(item) != -1;
@@ -572,7 +608,7 @@ session.onload(function(){
 		}
 	}
 
-});
+}, false, true);
 
 
 /* audio player */
@@ -602,8 +638,12 @@ function player_ini(){
 	            	window.aplayers[0].play();
 	            	if(window.aplayers[0].audio.paused) {
 	            		//window.aplayers[0].notice('Click Here', 20000, 0.8);
-	            		if(page.tran.getLang() == 'zh') tips.info({timeout: 13000, position:"bottomCenter",message: "<--戳左下角继续音乐哦(^_−)☆"});
-	            		else tips.info({timeout: 13000, position:"bottomCenter",message: "Click bottom left conner to continue music (^_−)☆"});
+	            		let pos = 'topRight';
+	            		if(page.availableScreenResolution[1] >= 570){
+	            			pos = 'bottomCenter';
+	            		}
+	            		if(page.tran.getLang() == 'zh') tips.info({timeout: 13000, position: pos,message: "<--戳左下角继续音乐哦(^_−)☆"});
+	            		else tips.info({timeout: 13000, position: pos,message: "Click bottom left conner to continue music (^_−)☆"});
 	            	};
 	            }
 	            
@@ -631,7 +671,7 @@ function player_ini(){
 	            });
 	            setInterval(function(){
 	                try{
-	                	if(!window.aplayers[0].audio.paused) session.set('aplayer/seek', window.aplayers[0].audio.currentTime);
+	                	if(!window.aplayers[0].audio.paused) session.onload(function(){session.set('aplayer/seek', window.aplayers[0].audio.currentTime);});
 	            	}catch(e){
 
 	            	}
@@ -750,7 +790,7 @@ page.showUshio = function(){
 	session.onload(function(){
 
 		if(page.tran.getLang() == 'zh'){
-			var title = 'Ushio菜单';
+			var title = `<a onClick="tips.info({message:'`+page.version+`<br>${page.fp}'})">Ushio</a>菜单`;
 			var guide = '导航';
 			var cool = '主页';
 			var github = '源码';
@@ -776,7 +816,7 @@ page.showUshio = function(){
 			}
 
 		}else{
-			var title = 'Ushio Menu';
+			var title = `<a onClick="tips.info({message:'`+page.version+`'})">Ushio</a> Menu`;
 			var guide = 'Guide';
 			var cool = 'Cool';
 			var github = 'Github';
@@ -844,7 +884,7 @@ page.showUshio = function(){
 		    },
 		});
 
-	}, true);
+	}, false, true);
 }
 
 
@@ -936,7 +976,7 @@ setInterval(()=>{
 		console.log('Session unhealthy!!');
 		session_ajax_ini(session_errCnt++ % 2);
 	}
-	if(!session_ignore && new Date().valueOf() - SessionLastCntTime > 30000){
+	if(!session_ignore && new Date().valueOf() - SessionLastCntTime > 15000){
 		tips.question({
 			timeout: 9999999,
 			title: 'Warning',

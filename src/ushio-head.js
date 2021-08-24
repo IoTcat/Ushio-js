@@ -39,7 +39,7 @@ if(typeof block_tips == "undefined"){
 
 /* global default page config */
 var page = {
-	version: 'v3.5.3',
+	version: 'v3.6.10',
 	url: window.location.href,
 	title: 'Lovely Ushio',
 	icon: 'https://cdn.yimian.xyz/img/head/head3r.ico',
@@ -185,15 +185,15 @@ function getCache(){
 
 
 /* session ini */
-session.onload = function(f, enCache, isFirst){
-	if((enCache&&page.cache&&getCache()) || session.status){
+session.onload = function(f, enCache, fast_fetch, isFirst){
+	if((enCache&&page.cache&&getCache()) || (fast_fetch&&session.method === 'fast_fetch') || session.status){
 		if(isFirst == true){
 			session_wait(f);
 		}else{
 			f();
 		}
 	}else{
-		setTimeout(session.onload, 30, f, enCache, true);
+		setTimeout(session.onload, 30, f, enCache, fast_fetch, true);
 	}
 }
 
