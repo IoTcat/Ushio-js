@@ -972,11 +972,11 @@ setInterval(()=>{
 	}
 	if(!page.window) return;
 	if(page.LastWindowOpenTime > new Date().valueOf() - 10000) SessionLastCntTime = page.LastWindowOpenTime;
-	if(new Date().valueOf() - SessionLastCntTime > 10000){
+	if(new Date().valueOf() - SessionLastCntTime > 40000){
 		console.log('Session unhealthy!!');
 		session_ajax_ini(session_errCnt++ % 2);
 	}
-	if(!session_ignore && new Date().valueOf() - SessionLastCntTime > 15000){
+	if(!session_ignore && new Date().valueOf() - SessionLastCntTime > 70000){
 		tips.question({
 			timeout: 9999999,
 			title: 'Warning',
